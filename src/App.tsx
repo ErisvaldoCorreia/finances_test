@@ -1,5 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
+// components pre-mades with bootstrap on react
+import { Container } from "react-bootstrap";
+
+// Use toastify for notifications
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -51,25 +55,28 @@ export default function App() {
   };
 
   return (
-    <div className="App">
-      <strong>Pesquise o valor de um Ativo</strong>
-      <form>
-        <label htmlFor="name">TICKER Bolsa: </label>
-        <input value={ticker} onChange={handleChange} id="name" />
-      </form>
-      <button onClick={lerDados}>Pesquisar</button>
+    <Container className="p-3">
+      <Container className="p-5 mb-4 bg-light rounded-3">
+        <strong>Pesquise o valor de um Ativo</strong>
+        <form>
+          <label htmlFor="name">TICKER Bolsa: </label>
+          <input value={ticker} onChange={handleChange} id="name" />
+        </form>
+        <button onClick={lerDados}>Pesquisar</button>
 
-      {info && (
-        <div>
-          <p>Dados Recuperados:</p>
-          <strong>{`Simbolo: ${info.symbol}`}</strong>
-          <h3>{`Nome: ${info.longName}`}</h3>
-          <h5>{`Preço: ${info.regularMarketPrice}`}</h5>
+        {info && (
+          <div>
+            <p>Dados Recuperados:</p>
+            <strong>{`Simbolo: ${info.symbol}`}</strong>
+            <h3>{`Nome: ${info.longName}`}</h3>
+            <h5>{`Preço: ${info.regularMarketPrice}`}</h5>
 
-          <img src={`${info.logourl}`} alt={`${info.symbol}`} />
-        </div>
-      )}
-      <ToastContainer />
-    </div>
+            <img src={`${info.logourl}`} alt={`${info.symbol}`} />
+          </div>
+        )}
+
+        <ToastContainer />
+      </Container>
+    </Container>
   );
 }
