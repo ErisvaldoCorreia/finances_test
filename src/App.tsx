@@ -1,4 +1,8 @@
 import { useState } from "react";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "./styles.css";
 
 interface infoProps {
@@ -12,17 +16,28 @@ export default function App() {
   const [ticker, setTicker] = useState("");
   const [info, setInfo] = useState<infoProps | null>(null);
 
+  const notify = () =>
+    toast.warn("O Ticker não pode estar vazio!", { theme: "dark" });
+
+  const errorApi = () => {
+    toast.error("Ativo ou Empresa não encontrado", { theme: "dark" });
+    setTicker("");
+  };
+
   function handleChange(event: any) {
     setTicker(event.target.value);
   }
 
   const lerDados = async () => {
-    if (ticker === "") return alert("Ticker nao pode ser vazio");
+    if (ticker === "") return notify();
 
     const res = await fetch(
       `https://brapi.dev/api/quote/${ticker}?range=1d&interval=1d&fundamental=true`
     );
     const { results } = await res.json();
+
+    if (!results) return errorApi();
+
     const { symbol, longName, regularMarketPrice, logourl } = await results[0];
     const dataFetched = {
       symbol,
@@ -54,6 +69,7 @@ export default function App() {
           <img src={`${info.logourl}`} alt={`${info.symbol}`} />
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 }
